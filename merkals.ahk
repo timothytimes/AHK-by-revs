@@ -5340,26 +5340,6 @@ getModuleBaseAddress(sModule, hProcess) {
 		ErrorLevel := ERROR_MODULE_NOT_FOUND
 		return 0
 	}
-	
-	if(!hProcess) {
-		ErrorLevel := ERROR_INVALID_HANDLE
-		return 0
-	}
-	
-	dwSize = 1024*4                    ; 1024 * sizeof(HMODULE = 4)
-	VarSetCapacity(hMods, dwSize)    
-	VarSetCapacity(cbNeeded, 4)        ; DWORD = 4
-	dwRet := DllCall(    "Psapi.dll\EnumProcessModules"
-						, "UInt", hProcess
-						, "UInt", &hMods
-						, "UInt", dwSize
-						, "UInt*", cbNeeded
-						, "UInt")
-	if(dwRet == 0) {
-		ErrorLevel := ERROR_ENUM_PROCESS_MODULES
-		return 0
-	}
-	
 	dwMods := cbNeeded / 4            ; cbNeeded / sizeof(HMDOULE = 4)
 	i := 0
 	VarSetCapacity(hModule, 4)        ; HMODULE = 4
